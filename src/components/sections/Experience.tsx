@@ -66,7 +66,7 @@ export default function Experience() {
           </div>
 
           {/* Desired Internship Grid */}
-          <div>
+          <div className="hidden lg:block">
             <h2 className="text-3xl font-bold mb-12 flex items-center gap-3">
               <Briefcase className="text-accent-purple" /> Internships I want to do
             </h2>
