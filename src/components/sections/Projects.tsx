@@ -31,6 +31,15 @@ const projects = [
     tags: ["React", "UI/UX", "Tailwind"],
     github: "https://github.com/Jayakrishnagude/hangout-coffee-shop",
     vercel: "https://hangout-coffee-shop.vercel.app/"
+  },
+  {
+    title: "JV Grand Restaurant",
+    category: "Luxury Dining / Frontend",
+    desc: "A futuristic 3D restaurant experience with interactive menus and luxury aesthetic.",
+    image: "/projects/jv-grand.jpg",
+    tags: ["React", "Framer Motion", "3D"],
+    github: "https://github.com/Jayakrishnagude/jv-grand-restaurant",
+    vercel: "https://jv-grand-restaurant.vercel.app/"
   }
 ]
 
