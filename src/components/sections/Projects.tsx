@@ -34,10 +34,10 @@ const projects = [
   },
   {
     title: "JV Grand Restaurant",
-    category: "Luxury Dining / Frontend",
-    desc: "A futuristic 3D restaurant experience with interactive menus and luxury aesthetic.",
-    image: "/projects/jv-grand.jpg",
-    tags: ["React", "Framer Motion", "3D"],
+    category: "Futuristic Dining / 3D Web",
+    desc: "A premium 3D restaurant experience featuring interactive menus, luxury aesthetics, and a seamless booking system.",
+    image: "/projects/jv-grand.png",
+    tags: ["Next.js", "Framer Motion", "Three.js", "Tailwind"],
     github: "https://github.com/Jayakrishnagude/jv-grand-restaurant",
     vercel: "https://jv-grand-restaurant.vercel.app/"
   }
