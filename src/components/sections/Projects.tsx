@@ -10,9 +10,9 @@ const projects = [
     category: "Web Development",
     desc: "A premium modern web experience built with high performance and interactive design.",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
-    tags: ["Next.js", "Tailwind", "Vercel"],
-    github: "https://github.com/Jayakrishnagude/hone-webzen",
-    vercel: "https://hone-webzen.vercel.app/"
+    tags: ["Next.js", "Tailwind", "Render"],
+    github: "https://github.com/jayakrishnagude2/hone-webzen",
+    vercel: "https://hone-webzen.onrender.com/"
   },
   {
     title: "Styles Men",
