@@ -305,7 +305,7 @@ const OrganicWeb = () => {
 
 export default function NetworkGraph3D() {
   return (
-    <div className="fixed inset-0 z-[-1] bg-[#010302]">
+    <div className="fixed inset-0 z-0 bg-[#010302]">
       <Canvas camera={{ position: [0, 0, 14], fov: 60 }}>
         <ambientLight intensity={0.2} />
         <pointLight position={[0, 0, 10]} intensity={3} color="#00ff88" />

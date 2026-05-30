@@ -15,7 +15,7 @@ export default function Home() {
     <SmoothScroll>
       <NetworkGraph3D />
       <Navbar />
-      <main className="min-h-screen">
+      <main className="relative z-10 min-h-screen">
         <Hero />
         <About />
         <Skills />
