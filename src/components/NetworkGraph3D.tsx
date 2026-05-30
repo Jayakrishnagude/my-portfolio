@@ -78,7 +78,7 @@ export default function NetworkGraph3D() {
     <div className="fixed inset-0 z-[-1] bg-background">
       <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
         <fog attach="fog" args={['#050505', 5, 25]} />
-        <ParticleNetwork />
+        <SpiderWeb />
       </Canvas>
     </div>
   );
