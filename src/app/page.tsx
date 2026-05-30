@@ -15,6 +15,7 @@ export default function Home() {
   return (
     <SmoothScroll>
       <CustomCursor />
+      <NetworkGraph3D />
       <Navbar />
       <main className="min-h-screen">
         <Hero />
