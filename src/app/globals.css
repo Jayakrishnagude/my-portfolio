@@ -27,6 +27,10 @@
     @apply selection:bg-accent-green/30 selection:text-accent-green;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
+  
+  * {
+    cursor: none !important;
+  }
 }
 
 @layer components {
