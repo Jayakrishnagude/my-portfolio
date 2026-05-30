@@ -37,19 +37,7 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="pointer-events-auto relative w-full max-w-4xl mx-auto flex flex-col items-center text-center"
         >
-          {/* Complex Header Badge */}
-          <div className="flex items-center gap-4 mb-12 opacity-70 justify-center">
-            <div className="relative w-12 h-12 flex items-center justify-center border border-accent-green/30 rounded-full animate-[spin_10s_linear_infinite]">
-              <div className="w-2 h-2 bg-accent-green rounded-full"></div>
-              <div className="absolute top-0 right-0 w-1 h-1 bg-white rounded-full"></div>
-            </div>
-            <div className="flex flex-col items-start">
-              <h2 className="text-accent-green font-mono tracking-[0.4em] uppercase text-[10px] md:text-xs font-bold">
-                Digital Architect
-              </h2>
-              <span className="text-white/40 text-[9px] font-mono tracking-widest">VERSION_3.0 // ACTIVE</span>
-            </div>
-          </div>
+
           
           {/* Name */}
           <div className="relative group w-fit mx-auto mb-12">
