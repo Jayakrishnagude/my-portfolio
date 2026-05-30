@@ -99,6 +99,10 @@ export default function Hero() {
                 <span className="relative z-10">Explore Matrix</span> 
                 <ExternalLink className="w-4 h-4 relative z-10 group-hover:rotate-45 transition-transform" />
               </a>
+              <a href="/resume.docx" download className="relative px-8 py-4 bg-accent-green/10 backdrop-blur-xl border border-accent-green/20 hover:border-accent-green text-accent-green hover:text-black hover:bg-accent-green text-xs font-bold uppercase tracking-[0.2em] transition-all group overflow-hidden flex items-center gap-3 justify-center">
+                <span className="relative z-10">Download Resume</span> 
+                <Download className="w-4 h-4 relative z-10 group-hover:translate-y-1 transition-transform" />
+              </a>
             </div>
           </div>
         </motion.div>

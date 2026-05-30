@@ -48,7 +48,7 @@ export default function Projects() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
             <motion.div
               key={i}
@@ -56,11 +56,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ scale: 0.98 }}
-              className={`group relative overflow-hidden rounded-[2rem] bg-black/40 backdrop-blur-3xl border border-white/5 hover:border-accent-green/30 transition-all duration-500 ${
-                i === 0 ? 'md:col-span-4 min-h-[500px]' : 
-                i === 1 ? 'md:col-span-2 min-h-[500px]' : 
-                'md:col-span-2 min-h-[400px]'
-              }`}
+              className="group relative overflow-hidden rounded-[2rem] bg-black/40 backdrop-blur-3xl border border-white/5 hover:border-accent-green/30 transition-all duration-500 min-h-[300px]"
             >
               {/* Image Background */}
               <div className="absolute inset-0 z-0">
@@ -79,7 +75,7 @@ export default function Projects() {
               {/* Content */}
               <div className="absolute inset-0 p-8 flex flex-col justify-end z-10">
                 <span className="text-accent-green text-xs font-mono mb-3 block uppercase tracking-[0.2em]">{project.category}</span>
-                <h4 className={`font-black mb-4 tracking-tighter ${i === 0 ? 'text-4xl md:text-5xl' : 'text-3xl'}`}>{project.title}</h4>
+                <h4 className="font-black mb-4 tracking-tighter text-2xl md:text-3xl">{project.title}</h4>
                 <p className="text-white/60 text-sm md:text-base mb-8 max-w-md line-clamp-2 leading-relaxed">{project.desc}</p>
                 
                 <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
