@@ -8,7 +8,7 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Highlights from "@/components/sections/Highlights";
 import Contact from "@/components/sections/Contact";
-import Footer from "@/components/Footer";
+
 import NetworkGraph3D from "@/components/NetworkGraph3D";
 
 export default function Home() {
