@@ -36,11 +36,11 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 bg-background">
+    <section id="projects" className="py-24 bg-transparent relative z-10">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
-            <h2 className="text-accent-cyan font-mono tracking-widest uppercase text-sm mb-4">Featured Work</h2>
+            <h2 className="text-accent-green font-mono tracking-widest uppercase text-sm mb-4">Featured Work</h2>
             <h3 className="text-4xl md:text-5xl font-bold">Selected <span className="text-gradient">Creations</span></h3>
           </div>
           <button className="text-white/40 hover:text-white flex items-center gap-2 transition-colors">
@@ -56,7 +56,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -10 }}
-              className="group relative overflow-hidden rounded-3xl bg-white/5 border border-white/10"
+              className="group relative overflow-hidden rounded-3xl glass hover:border-accent-green/50 hover:shadow-[0_0_30px_rgba(0,255,136,0.15)] transition-all duration-500"
             >
               {/* Image Container */}
               <div className="aspect-video overflow-hidden relative">
@@ -74,7 +74,7 @@ export default function Projects() {
                   <a href={project.github} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
                     <Github className="w-5 h-5" />
                   </a>
-                  <a href={project.vercel} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-accent-cyan text-black flex items-center justify-center hover:scale-110 transition-transform">
+                  <a href={project.vercel} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-accent-green text-black flex items-center justify-center hover:scale-110 transition-transform">
                     <ExternalLink className="w-5 h-5" />
                   </a>
                 </div>
@@ -82,7 +82,7 @@ export default function Projects() {
 
               {/* Content */}
               <div className="p-8">
-                <span className="text-accent-cyan text-xs font-mono mb-2 block">{project.category}</span>
+                <span className="text-accent-green text-xs font-mono mb-2 block">{project.category}</span>
                 <h4 className="text-2xl font-bold mb-4">{project.title}</h4>
                 <p className="text-white/50 text-sm mb-6 line-clamp-2">{project.desc}</p>
                 

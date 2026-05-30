@@ -3,8 +3,8 @@
 @theme {
   --color-background: #050505;
   --color-foreground: #ffffff;
-  --color-accent-cyan: #00f2ff;
-  --color-accent-purple: #7000ff;
+  --color-accent-green: #00ff88;
+  --color-accent-darkgreen: #047857;
   --font-sans: var(--font-poppins);
   
   --animate-float: float 6s ease-in-out infinite;
@@ -15,8 +15,8 @@
     50% { transform: translateY(-20px); }
   }
   @keyframes glow {
-    0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
-    100% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); }
+    0% { box-shadow: 0 0 5px rgba(0, 255, 136, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
   }
 }
 
@@ -24,7 +24,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    @apply selection:bg-accent-cyan/30 selection:text-accent-cyan;
+    @apply selection:bg-accent-green/30 selection:text-accent-green;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
 }
@@ -38,16 +38,16 @@
     @apply bg-black/40 backdrop-blur-md border border-white/5;
   }
 
-  .neon-glow-cyan {
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+  .neon-glow-green {
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
   }
 
-  .neon-glow-purple {
-    box-shadow: 0 0 15px rgba(112, 0, 255, 0.3);
+  .neon-glow-darkgreen {
+    box-shadow: 0 0 15px rgba(4, 120, 87, 0.3);
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-cyan to-accent-purple;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-green to-accent-darkgreen;
   }
 }
 

@@ -8,10 +8,12 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Highlights from "@/components/sections/Highlights";
 import Contact from "@/components/sections/Contact";
+import NetworkGraph3D from "@/components/NetworkGraph3D";
 
 export default function Home() {
   return (
     <SmoothScroll>
+      <NetworkGraph3D />
       <CustomCursor />
       <Navbar />
       <main className="min-h-screen">

@@ -16,14 +16,14 @@ const certifications = [
     org: "Ratan Tata Innovation Hub",
     desc: "Certification for outstanding performance in innovation and technical excellence.",
     icon: Award,
-    color: "border-l-accent-cyan"
+    color: "border-l-accent-green"
   },
   {
     title: "Codeverse Certification",
     org: "Codeverse",
     desc: "1st year certification in advanced coding principles and logic.",
     icon: Code,
-    color: "border-l-accent-purple"
+    color: "border-l-accent-darkgreen"
   },
   {
     title: "Aikyam App Development",
@@ -36,7 +36,7 @@ const certifications = [
 
 export default function Highlights() {
   return (
-    <section className="py-24 bg-background">
+    <section className="py-24 bg-transparent relative z-10">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16">
           

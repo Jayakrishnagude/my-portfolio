@@ -25,16 +25,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background">
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <Canvas shadows gl={{ antialias: true }}>
-          <Suspense fallback={null}>
-            <HeroModel />
-          </Suspense>
-        </Canvas>
-      </div>
-
+    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent">
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-5xl">
         <motion.div
@@ -42,7 +33,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-accent-cyan font-medium tracking-[0.2em] uppercase text-sm mb-4">
+          <h2 className="text-accent-green font-medium tracking-[0.2em] uppercase text-sm mb-4">
             Building Future Digital Experiences
           </h2>
           <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">
@@ -65,7 +56,7 @@ export default function Hero() {
             <a href="#projects" className="glass-dark px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/10 transition-all group">
               View Projects <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="/resume.docx" download className="glass px-8 py-3 rounded-full flex items-center gap-2 hover:bg-accent-cyan/20 border-accent-cyan/20 text-accent-cyan transition-all group">
+            <a href="/resume.docx" download className="glass px-8 py-3 rounded-full flex items-center gap-2 hover:bg-accent-green/20 border-accent-green/20 text-accent-green transition-all group">
               Download Resume <Download className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
             </a>
             <a href="#contact" className="glass-dark px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/10 transition-all group">
@@ -87,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1 + i * 0.1 }}
-            className="glass p-4 rounded-xl border-l-4 border-l-accent-cyan"
+            className="glass p-4 rounded-xl border-l-4 border-l-accent-green"
           >
             <p className="text-xs text-white/40 uppercase tracking-widest">{stat.label}</p>
             <p className="text-lg font-bold">{stat.val}</p>

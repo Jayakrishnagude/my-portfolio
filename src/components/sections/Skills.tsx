@@ -16,14 +16,14 @@ const skills = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 bg-background relative overflow-hidden">
+    <section id="skills" className="py-24 bg-transparent relative overflow-hidden">
       <div className="container mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="mb-16"
         >
-          <h2 className="text-accent-cyan font-mono tracking-widest uppercase text-sm mb-4">Tech Stack</h2>
+          <h2 className="text-accent-green font-mono tracking-widest uppercase text-sm mb-4">Tech Stack</h2>
           <h3 className="text-4xl md:text-5xl font-bold">Skills & <span className="text-gradient">Tools</span></h3>
         </motion.div>
 
@@ -49,7 +49,7 @@ export default function Skills() {
               <div className={`w-16 h-16 rounded-2xl ${skill.bg} flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                 <skill.icon className={`w-8 h-8 ${skill.color}`} />
               </div>
-              <h4 className="font-bold text-lg group-hover:text-accent-cyan transition-colors">{skill.name}</h4>
+              <h4 className="font-bold text-lg group-hover:text-accent-green transition-colors">{skill.name}</h4>
               
               {/* Progress bar simulation */}
               <div className="mt-4 w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -57,7 +57,7 @@ export default function Skills() {
                   initial={{ width: 0 }}
                   whileInView={{ width: "100%" }}
                   transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
-                  className={`h-full bg-gradient-to-r from-transparent to-accent-cyan`}
+                  className={`h-full bg-gradient-to-r from-transparent to-accent-green`}
                 />
               </div>
             </motion.div>
@@ -80,7 +80,7 @@ export default function Skills() {
               repeat: Infinity,
               delay: Math.random() * 5
             }}
-            className="absolute w-1 h-1 bg-accent-cyan rounded-full"
+            className="absolute w-1 h-1 bg-accent-green rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`

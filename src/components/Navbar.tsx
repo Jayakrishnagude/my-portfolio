@@ -30,7 +30,7 @@ export default function Navbar() {
           animate={{ opacity: 1, x: 0 }}
           className="text-2xl font-black tracking-tighter"
         >
-          JG<span className="text-accent-cyan">.</span>
+          JG<span className="text-accent-green">.</span>
         </motion.div>
 
         {/* Desktop Menu */}
@@ -42,7 +42,7 @@ export default function Navbar() {
               className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors relative group"
             >
               {link.name}
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-accent-cyan transition-all group-hover:w-1/2" />
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-accent-green transition-all group-hover:w-1/2" />
             </a>
           ))}
         </div>
@@ -51,7 +51,7 @@ export default function Navbar() {
           href="#contact"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="hidden md:block glass px-6 py-2 rounded-full text-sm font-bold hover:bg-accent-cyan hover:text-black transition-all"
+          className="hidden md:block glass px-6 py-2 rounded-full text-sm font-bold hover:bg-accent-green hover:text-black transition-all"
         >
           Let's Talk
         </motion.a>
