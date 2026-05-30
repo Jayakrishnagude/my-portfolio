@@ -26,44 +26,85 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent">
-      {/* Hero Content */}
-      <div className="relative z-10 w-full px-6 md:px-12 max-w-[1400px] flex flex-col justify-center h-full pt-20">
+      {/* Hyper-Complex Hero Content */}
+      <div className="relative z-10 w-full px-6 md:px-12 max-w-[1400px] flex flex-col justify-center h-full pt-20 pointer-events-none">
+        
+        {/* Floating Data Nodes */}
+        <div className="absolute top-1/4 right-[10%] hidden lg:flex flex-col gap-2 text-[10px] font-mono text-accent-green/50">
+          <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity }}>[SYS.CORE.ACTIVE]</motion.div>
+          <div className="flex gap-4 border-t border-accent-green/20 pt-2 mt-2">
+            <span>X: 24.582</span>
+            <span>Y: 91.024</span>
+          </div>
+          <div className="w-24 h-[1px] bg-gradient-to-r from-accent-green to-transparent mt-2"></div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-auto relative"
         >
-          <div className="flex items-center gap-4 mb-8 opacity-70">
-            <span className="w-12 h-[2px] bg-accent-green block"></span>
-            <h2 className="text-accent-green font-mono tracking-[0.4em] uppercase text-xs md:text-sm font-bold">
-              Digital Architect & Creator
-            </h2>
+          {/* Complex Header Badge */}
+          <div className="flex items-center gap-4 mb-12 opacity-70">
+            <div className="relative w-12 h-12 flex items-center justify-center border border-accent-green/30 rounded-full animate-[spin_10s_linear_infinite]">
+              <div className="w-2 h-2 bg-accent-green rounded-full"></div>
+              <div className="absolute top-0 right-0 w-1 h-1 bg-white rounded-full"></div>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="text-accent-green font-mono tracking-[0.4em] uppercase text-[10px] md:text-xs font-bold">
+                Digital Architect
+              </h2>
+              <span className="text-white/40 text-[9px] font-mono tracking-widest">VERSION_3.0 // ACTIVE</span>
+            </div>
           </div>
           
-          <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter mb-4 text-white/90">
-            JAYAKRISHNA
-          </h1>
-          <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-white to-accent-darkgreen mb-12">
-            GUDE.
-          </h1>
+          {/* Lowercase, Smaller Name */}
+          <div className="relative group w-fit">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-2 text-white/90 lowercase relative z-10">
+              jayakrishna
+            </h1>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-white to-accent-darkgreen mb-12 lowercase relative z-10">
+              gude.
+            </h1>
+            {/* Glitch Shadow Effect */}
+            <h1 className="absolute top-1 left-1 text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-accent-green/30 blur-sm lowercase -z-10 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500">
+              jayakrishna gude.
+            </h1>
+          </div>
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-16 border-t border-white/10 pt-8">
-            <div className="max-w-md">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mt-16 relative">
+            {/* Complex Geometric Divider */}
+            <div className="absolute -top-8 left-0 w-full h-[1px] bg-white/10">
+              <div className="absolute top-0 left-0 w-1/3 h-[1px] bg-gradient-to-r from-accent-green to-transparent"></div>
+              <div className="absolute -top-[3px] right-[20%] w-[7px] h-[7px] border border-accent-green rotate-45"></div>
+            </div>
+
+            <div className="max-w-xl relative">
+              <div className="absolute -left-6 top-0 w-[2px] h-full bg-white/5">
+                <motion.div 
+                  animate={{ top: ['0%', '100%', '0%'] }} 
+                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                  className="absolute left-0 w-[2px] h-8 bg-accent-green"
+                />
+              </div>
               <motion.p
                 key={roleIndex}
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 15 }}
                 transition={{ duration: 0.5 }}
-                className="text-xl md:text-2xl text-white/50 font-light tracking-wide leading-relaxed"
+                className="text-lg md:text-2xl text-white/50 font-light tracking-wide leading-relaxed"
               >
-                Specializing as a <strong className="text-white">{" " + roles[roleIndex]}</strong>, building premium organic interfaces.
+                Specializing as a <strong className="text-white">{" " + roles[roleIndex]}</strong>, engineering highly complex, organic, and futuristic digital experiences.
               </motion.p>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <a href="#projects" className="glass-dark px-8 py-4 rounded-full flex items-center gap-3 hover:bg-white/10 transition-all group border border-white/5 hover:border-accent-green/30 text-sm font-bold uppercase tracking-wider">
-                Explore Work <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-accent-green" />
+            <div className="flex flex-wrap gap-4 relative z-20">
+              <a href="#projects" className="relative px-8 py-4 bg-black/40 backdrop-blur-xl border border-white/10 hover:border-accent-green/50 text-xs font-bold uppercase tracking-[0.2em] transition-all group overflow-hidden flex items-center gap-3">
+                <span className="absolute inset-0 bg-accent-green/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
+                <span className="relative z-10">Explore Matrix</span> 
+                <ExternalLink className="w-4 h-4 relative z-10 group-hover:rotate-45 transition-transform" />
               </a>
             </div>
           </div>
