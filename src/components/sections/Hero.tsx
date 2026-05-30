@@ -61,17 +61,14 @@ export default function Hero() {
             </div>
           </div>
           
-          {/* Lowercase, Smaller Name */}
-          <div className="relative group w-fit mx-auto">
-            <h1 className="text-[12vw] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-2 text-white/90 lowercase relative z-10 text-center">
-              jayakrishna
-            </h1>
-            <h1 className="text-[12vw] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-white to-accent-darkgreen mb-12 lowercase relative z-10 text-center">
-              gude.
+          {/* Name */}
+          <div className="relative group w-fit mx-auto mb-12">
+            <h1 className="text-[10vw] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-accent-green relative z-10 text-center">
+              Jayakrishna Gude.
             </h1>
             {/* Glitch Shadow Effect */}
-            <h1 className="absolute top-1 left-1 w-full text-[12vw] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-accent-green/30 blur-sm lowercase -z-10 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500 text-center">
-              jayakrishna gude.
+            <h1 className="absolute top-1 left-1 w-full text-[10vw] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-accent-green/30 blur-sm -z-10 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500 text-center">
+              Jayakrishna Gude.
             </h1>
           </div>
           
