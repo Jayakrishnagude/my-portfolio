@@ -29,15 +29,7 @@ export default function Hero() {
       {/* Hyper-Complex Hero Content */}
       <div className="relative z-10 w-full px-6 md:px-12 max-w-[1400px] flex flex-col justify-center h-full pt-20 pointer-events-none">
         
-        {/* Floating Data Nodes */}
-        <div className="absolute top-1/4 right-[10%] hidden lg:flex flex-col gap-2 text-[10px] font-mono text-accent-green/50">
-          <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity }}>[SYS.CORE.ACTIVE]</motion.div>
-          <div className="flex gap-4 border-t border-accent-green/20 pt-2 mt-2">
-            <span>X: 24.582</span>
-            <span>Y: 91.024</span>
-          </div>
-          <div className="w-24 h-[1px] bg-gradient-to-r from-accent-green to-transparent mt-2"></div>
-        </div>
+
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
