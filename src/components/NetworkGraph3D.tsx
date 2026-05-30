@@ -4,10 +4,19 @@ import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
+// Global mouse tracker for bulletproof background tracking
+const globalMouse = { x: 0, y: 0 };
+if (typeof window !== 'undefined') {
+  window.addEventListener('pointermove', (e) => {
+    globalMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    globalMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+}
+
 // --- Procedural Crawling Spider ---
 const Spider3D = () => {
   const groupRef = useRef<THREE.Group>(null);
-  const { viewport, mouse } = useThree();
+  const { viewport } = useThree();
   const [targetPos] = useState(() => new THREE.Vector3());
   const [currentPos] = useState(() => new THREE.Vector3());
   
@@ -18,7 +27,7 @@ const Spider3D = () => {
     if (!groupRef.current) return;
 
     // Convert normalized mouse to world space
-    targetPos.set((mouse.x * viewport.width) / 2, (mouse.y * viewport.height) / 2, 0);
+    targetPos.set((globalMouse.x * viewport.width) / 2, (globalMouse.y * viewport.height) / 2, 0);
 
     // Calculate movement for walking animation
     const dx = targetPos.x - currentPos.x;
@@ -41,8 +50,8 @@ const Spider3D = () => {
 
     // Animate legs (Walking cycle based on movement and time)
     const time = state.clock.elapsedTime;
-    const walkSpeed = distance > 0.05 ? 15 : 2; // Fast when moving, slow idle breathing
-    const amplitude = distance > 0.05 ? 0.3 : 0.05;
+    const walkSpeed = distance > 0.05 ? 18 : 2; // Fast when moving, slow idle breathing
+    const amplitude = distance > 0.05 ? 0.4 : 0.05;
 
     legsRef.current.forEach((leg, index) => {
       if (!leg) return;
@@ -57,16 +66,16 @@ const Spider3D = () => {
   });
 
   return (
-    <group ref={groupRef} scale={[0.5, 0.5, 0.5]}>
+    <group ref={groupRef} scale={[0.6, 0.6, 0.6]}>
       {/* Abdomen */}
       <mesh position={[0, -0.4, 0.2]} castShadow>
         <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color="#022010" roughness={0.2} metalness={0.8} />
+        <meshStandardMaterial color="#010a05" roughness={0.1} metalness={0.9} />
       </mesh>
       {/* Cephalothorax (Head) */}
       <mesh position={[0, 0.4, 0.1]} castShadow>
         <sphereGeometry args={[0.35, 32, 32]} />
-        <meshStandardMaterial color="#00ff88" roughness={0.1} metalness={0.9} emissive="#00ff88" emissiveIntensity={0.2} />
+        <meshStandardMaterial color="#00ff88" roughness={0.1} metalness={1} emissive="#00ff88" emissiveIntensity={0.4} />
       </mesh>
       {/* Eyes */}
       <mesh position={[-0.1, 0.7, 0.2]}>
@@ -90,8 +99,8 @@ const Spider3D = () => {
             rotation={[0, 0, angle]}
           >
             <mesh position={[0, 0.8, 0]}>
-              <cylinderGeometry args={[0.04, 0.02, 1.6, 8]} />
-              <meshStandardMaterial color="#00ff88" roughness={0.4} metalness={0.6} />
+              <cylinderGeometry args={[0.03, 0.01, 1.8, 8]} />
+              <meshStandardMaterial color="#00ff88" roughness={0.2} metalness={0.8} emissive="#00ff88" emissiveIntensity={0.1} />
             </mesh>
           </group>
         );
@@ -104,11 +113,11 @@ const Spider3D = () => {
 const OrganicWeb = () => {
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
-  const { viewport, mouse } = useThree();
+  const { viewport } = useThree();
 
-  const gridSize = 20;
+  const gridSize = 25; // More complex grid
   const particleCount = gridSize * gridSize;
-  const spacing = 1.2;
+  const spacing = 1.0; // Tighter spacing
 
   // Generate web nodes
   const { basePositions, positions } = useMemo(() => {
@@ -120,7 +129,7 @@ const OrganicWeb = () => {
       for (let y = 0; y < gridSize; y++) {
         const px = (x - gridSize / 2) * spacing;
         const py = (y - gridSize / 2) * spacing;
-        const pz = (Math.random() - 0.5) * 1.5;
+        const pz = (Math.random() - 0.5) * 2.0;
         
         basePositions[i] = px;
         basePositions[i + 1] = py;
@@ -141,8 +150,8 @@ const OrganicWeb = () => {
     if (!pointsRef.current || !linesRef.current) return;
     
     const time = state.clock.elapsedTime;
-    const mouseX = (mouse.x * viewport.width) / 2;
-    const mouseY = (mouse.y * viewport.height) / 2;
+    const mouseX = (globalMouse.x * viewport.width) / 2;
+    const mouseY = (globalMouse.y * viewport.height) / 2;
 
     const posAttr = pointsRef.current.geometry.attributes.position;
     let lineIdx = 0;
@@ -151,20 +160,20 @@ const OrganicWeb = () => {
       const i3 = i * 3;
       
       // Base positions with organic breathing
-      let bx = basePositions[i3] + Math.sin(time * 0.5 + basePositions[i3+1]) * 0.2;
-      let by = basePositions[i3+1] + Math.cos(time * 0.6 + basePositions[i3]) * 0.2;
-      let bz = basePositions[i3+2] + Math.sin(time * 0.4 + i) * 0.1;
+      let bx = basePositions[i3] + Math.sin(time * 0.5 + basePositions[i3+1]) * 0.3;
+      let by = basePositions[i3+1] + Math.cos(time * 0.6 + basePositions[i3]) * 0.3;
+      let bz = basePositions[i3+2] + Math.sin(time * 0.4 + i) * 0.2;
 
       // Elastic pull towards cursor
       const dx = mouseX - bx;
       const dy = mouseY - by;
       const dist = Math.sqrt(dx * dx + dy * dy);
       
-      if (dist < 4) {
-        const pull = Math.max(0, 1 - dist / 4);
-        bx += dx * pull * 0.4; // Pull effect
-        by += dy * pull * 0.4;
-        bz += pull * 1.5; // Bulge outwards towards camera
+      if (dist < 5) {
+        const pull = Math.max(0, 1 - dist / 5);
+        bx += dx * pull * 0.5; // Stronger pull effect
+        by += dy * pull * 0.5;
+        bz += pull * 2.5; // Bulge outwards towards camera
       }
 
       // Smooth interpolation for lifeform elasticity
@@ -174,9 +183,9 @@ const OrganicWeb = () => {
 
       posAttr.setXYZ(
         i,
-        currentX + (bx - currentX) * 0.1,
-        currentY + (by - currentY) * 0.1,
-        currentZ + (bz - currentZ) * 0.1
+        currentX + (bx - currentX) * 0.15,
+        currentY + (by - currentY) * 0.15,
+        currentZ + (bz - currentZ) * 0.15
       );
 
       // Connect adjacent nodes (grid logic)
@@ -206,12 +215,12 @@ const OrganicWeb = () => {
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
-        <pointsMaterial size={0.08} color="#00ff88" transparent opacity={0.6} />
+        <pointsMaterial size={0.06} color="#00ff88" transparent opacity={0.8} />
       </points>
 
       <lineSegments ref={linesRef}>
         <bufferGeometry />
-        <lineBasicMaterial color="#00ff88" transparent opacity={0.15} blending={THREE.AdditiveBlending} />
+        <lineBasicMaterial color="#00ff88" transparent opacity={0.25} blending={THREE.AdditiveBlending} />
       </lineSegments>
     </group>
   );
@@ -219,11 +228,12 @@ const OrganicWeb = () => {
 
 export default function NetworkGraph3D() {
   return (
-    <div className="fixed inset-0 z-[-1] bg-[#020503]">
-      <Canvas camera={{ position: [0, 0, 12], fov: 60 }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[0, 0, 10]} intensity={2} color="#00ff88" />
-        <fog attach="fog" args={['#020503', 8, 20]} />
+    <div className="fixed inset-0 z-[-1] bg-[#010302]">
+      <Canvas camera={{ position: [0, 0, 14], fov: 60 }}>
+        <ambientLight intensity={0.2} />
+        <pointLight position={[0, 0, 10]} intensity={3} color="#00ff88" />
+        <pointLight position={[5, -5, 5]} intensity={1} color="#005533" />
+        <fog attach="fog" args={['#010302', 10, 25]} />
         
         <OrganicWeb />
         <Spider3D />
