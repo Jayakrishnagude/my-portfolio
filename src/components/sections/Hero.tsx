@@ -27,32 +27,33 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent">
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-5xl">
+      <div className="relative z-10 text-center px-4 max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h2 className="text-accent-green font-medium tracking-[0.2em] uppercase text-sm mb-4">
+          <h2 className="text-accent-green font-mono tracking-[0.3em] uppercase text-xs md:text-sm mb-6 opacity-80">
             Building Future Digital Experiences
           </h2>
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">
-            Jayakrishna <span className="text-gradient">Gude</span>
+          <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter leading-none">
+            Jayakrishna <br className="md:hidden" /><span className="text-gradient">Gude</span>
           </h1>
           
-          <div className="h-12 mb-8">
+          <div className="h-16 mb-10">
             <motion.p
               key={roleIndex}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="text-xl md:text-3xl text-white/70 font-light"
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl md:text-4xl text-white/60 font-light tracking-wide"
             >
               {roles[roleIndex]}
             </motion.p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
+          <div className="flex flex-wrap justify-center gap-6 mt-12">
             <a href="#projects" className="glass-dark px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/10 transition-all group">
               View Projects <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>

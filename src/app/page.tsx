@@ -1,5 +1,5 @@
 import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
+import SpidermanCanvas from "@/components/SpidermanCanvas";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <SmoothScroll>
       <NetworkGraph3D />
-      <CustomCursor />
+      <SpidermanCanvas />
       <Navbar />
       <main className="min-h-screen">
         <Hero />
