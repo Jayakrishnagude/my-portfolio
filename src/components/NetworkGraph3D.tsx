@@ -306,7 +306,7 @@ const OrganicWeb = () => {
 export default function NetworkGraph3D() {
   return (
     <div className="fixed inset-0 z-[50] pointer-events-none bg-transparent">
-      <Canvas camera={{ position: [0, 0, 14], fov: 60 }}>
+      <Canvas style={{ pointerEvents: 'none' }} camera={{ position: [0, 0, 14], fov: 60 }}>
         <ambientLight intensity={0.2} />
         <pointLight position={[0, 0, 10]} intensity={3} color="#00ff88" />
         <pointLight position={[5, -5, 5]} intensity={1} color="#005533" />
