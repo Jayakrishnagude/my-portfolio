@@ -48,56 +48,64 @@ export default function Projects() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
           {projects.map((project, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative overflow-hidden rounded-3xl glass hover:border-accent-green/50 hover:shadow-[0_0_30px_rgba(0,255,136,0.15)] transition-all duration-500"
+              whileHover={{ scale: 0.98 }}
+              className={`group relative overflow-hidden rounded-[2rem] bg-black/40 backdrop-blur-3xl border border-white/5 hover:border-accent-green/30 transition-all duration-500 ${
+                i === 0 ? 'md:col-span-4 min-h-[500px]' : 
+                i === 1 ? 'md:col-span-2 min-h-[500px]' : 
+                'md:col-span-2 min-h-[400px]'
+              }`}
             >
-              {/* Image Container */}
-              <div className="aspect-video overflow-hidden relative">
+              {/* Image Background */}
+              <div className="absolute inset-0 z-0">
                 <Image 
                   src={project.image} 
                   alt={project.title}
-                  width={800}
-                  height={450}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.5] group-hover:grayscale-0"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60 grayscale-[0.8] group-hover:grayscale-[0.2]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-                
-                {/* Hover Buttons */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform">
-                    <Github className="w-5 h-5" />
-                  </a>
-                  <a href={project.vercel} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-accent-green text-black flex items-center justify-center hover:scale-110 transition-transform">
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020503] via-[#020503]/80 to-transparent" />
               </div>
+
+              {/* Spotlight Overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(0,255,136,0.15),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0" />
 
               {/* Content */}
-              <div className="p-8">
-                <span className="text-accent-green text-xs font-mono mb-2 block">{project.category}</span>
-                <h4 className="text-2xl font-bold mb-4">{project.title}</h4>
-                <p className="text-white/50 text-sm mb-6 line-clamp-2">{project.desc}</p>
+              <div className="absolute inset-0 p-8 flex flex-col justify-end z-10">
+                <span className="text-accent-green text-xs font-mono mb-3 block uppercase tracking-[0.2em]">{project.category}</span>
+                <h4 className={`font-black mb-4 tracking-tighter ${i === 0 ? 'text-4xl md:text-5xl' : 'text-3xl'}`}>{project.title}</h4>
+                <p className="text-white/60 text-sm md:text-base mb-8 max-w-md line-clamp-2 leading-relaxed">{project.desc}</p>
                 
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, j) => (
-                    <span key={j} className="text-[10px] uppercase tracking-widest px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                      {tag}
-                    </span>
-                  ))}
+                <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, j) => (
+                      <span key={j} className="text-[10px] uppercase tracking-widest px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 hover:bg-white text-white hover:text-black backdrop-blur-xl flex items-center justify-center transition-colors">
+                      <Github className="w-5 h-5" />
+                    </a>
+                    <a href={project.vercel} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-accent-green/20 hover:bg-accent-green text-accent-green hover:text-black backdrop-blur-xl flex items-center justify-center transition-colors">
+                      <ExternalLink className="w-5 h-5" />
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              {/* Magnetic Corner */}
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowUpRight className="w-4 h-4" />
+              {/* Floating Arrow Top Right */}
+              <div className="absolute top-8 right-8 w-12 h-12 rounded-full border border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-10">
+                <ArrowUpRight className="w-5 h-5 text-white/50 group-hover:text-accent-green transition-colors" />
               </div>
             </motion.div>
           ))}

@@ -27,42 +27,45 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent">
       {/* Hero Content */}
-      <div className="relative z-10 text-center px-4 max-w-6xl">
+      <div className="relative z-10 w-full px-6 md:px-12 max-w-[1400px] flex flex-col justify-center h-full pt-20">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h2 className="text-accent-green font-mono tracking-[0.3em] uppercase text-xs md:text-sm mb-6 opacity-80">
-            Building Future Digital Experiences
-          </h2>
-          <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter leading-none">
-            Jayakrishna <br className="md:hidden" /><span className="text-gradient">Gude</span>
+          <div className="flex items-center gap-4 mb-8 opacity-70">
+            <span className="w-12 h-[2px] bg-accent-green block"></span>
+            <h2 className="text-accent-green font-mono tracking-[0.4em] uppercase text-xs md:text-sm font-bold">
+              Digital Architect & Creator
+            </h2>
+          </div>
+          
+          <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter mb-4 text-white/90">
+            JAYAKRISHNA
+          </h1>
+          <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-white to-accent-darkgreen mb-12">
+            GUDE.
           </h1>
           
-          <div className="h-16 mb-10">
-            <motion.p
-              key={roleIndex}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5 }}
-              className="text-2xl md:text-4xl text-white/60 font-light tracking-wide"
-            >
-              {roles[roleIndex]}
-            </motion.p>
-          </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-16 border-t border-white/10 pt-8">
+            <div className="max-w-md">
+              <motion.p
+                key={roleIndex}
+                initial={{ opacity: 0, x: -15 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 15 }}
+                transition={{ duration: 0.5 }}
+                className="text-xl md:text-2xl text-white/50 font-light tracking-wide leading-relaxed"
+              >
+                Specializing as a <strong className="text-white">{" " + roles[roleIndex]}</strong>, building premium organic interfaces.
+              </motion.p>
+            </div>
 
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
-            <a href="#projects" className="glass-dark px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/10 transition-all group">
-              View Projects <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="/resume.docx" download className="glass px-8 py-3 rounded-full flex items-center gap-2 hover:bg-accent-green/20 border-accent-green/20 text-accent-green transition-all group">
-              Download Resume <Download className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-            </a>
-            <a href="#contact" className="glass-dark px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/10 transition-all group">
-              Contact Me <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
-            </a>
+            <div className="flex flex-wrap gap-4">
+              <a href="#projects" className="glass-dark px-8 py-4 rounded-full flex items-center gap-3 hover:bg-white/10 transition-all group border border-white/5 hover:border-accent-green/30 text-sm font-bold uppercase tracking-wider">
+                Explore Work <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-accent-green" />
+              </a>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -23,8 +23,8 @@ export default function Navbar() {
   }, [])
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-8'}`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
+    <nav className={`fixed top-0 left-0 w-full z-50 flex justify-center transition-all duration-500 ${isScrolled ? 'py-4' : 'py-8'}`}>
+      <div className={`flex justify-between items-center px-8 transition-all duration-500 ${isScrolled ? 'w-[90%] md:w-[70%] max-w-4xl bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full py-3 shadow-[0_8px_32px_rgba(0,255,136,0.05)]' : 'w-full max-w-7xl'}`}>
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -34,15 +34,15 @@ export default function Navbar() {
         </motion.div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-2 glass-dark px-6 py-2 rounded-full border border-white/10">
+        <div className={`hidden md:flex items-center gap-2 ${!isScrolled ? 'glass-dark px-6 py-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]' : ''}`}>
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors relative group"
+              className="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors relative group"
             >
               {link.name}
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-accent-green transition-all group-hover:w-1/2" />
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-accent-green transition-all duration-300 group-hover:w-1/2" />
             </a>
           ))}
         </div>
@@ -51,7 +51,7 @@ export default function Navbar() {
           href="#contact"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="hidden md:block glass px-6 py-2 rounded-full text-sm font-bold hover:bg-accent-green hover:text-black transition-all"
+          className="hidden md:block glass px-6 py-2 rounded-full text-sm font-bold hover:bg-accent-green hover:text-black hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transition-all"
         >
           Let's Talk
         </motion.a>
