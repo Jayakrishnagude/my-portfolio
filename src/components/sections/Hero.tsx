@@ -5,6 +5,7 @@ import { Suspense, useEffect, useState } from 'react'
 import HeroModel from '../canvas/HeroModel'
 import { motion } from 'framer-motion'
 import { ChevronDown, Download, ExternalLink, Mail } from 'lucide-react'
+import NetworkGraph3D from '../NetworkGraph3D'
 
 const roles = [
   "Mechanical Engineering Student",
@@ -26,6 +27,7 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent">
+      <NetworkGraph3D />
       {/* Hyper-Complex Hero Content */}
       <div className="relative z-10 w-full px-6 md:px-12 max-w-[1400px] flex flex-col justify-center h-full pt-20 pointer-events-none">
         
