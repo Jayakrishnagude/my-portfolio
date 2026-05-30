@@ -1,73 +1,217 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useRef, useMemo, useState } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const SpiderWeb = () => {
+// --- Procedural Crawling Spider ---
+const Spider3D = () => {
   const groupRef = useRef<THREE.Group>(null);
+  const { viewport, mouse } = useThree();
+  const [targetPos] = useState(() => new THREE.Vector3());
+  const [currentPos] = useState(() => new THREE.Vector3());
+  
+  // Create 8 legs (each with 3 joints for organic movement)
+  const legsRef = useRef<THREE.Group[]>([]);
 
-  // Generate Spider Web Geometry
-  const { radialPoints, spiralPoints } = useMemo(() => {
-    const radPoints = [];
-    const spirPoints = [];
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+
+    // Convert normalized mouse to world space
+    targetPos.set((mouse.x * viewport.width) / 2, (mouse.y * viewport.height) / 2, 0);
+
+    // Calculate movement for walking animation
+    const dx = targetPos.x - currentPos.x;
+    const dy = targetPos.y - currentPos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
     
-    const numRadials = 16;
-    const numSpirals = 20;
-    const maxRadius = 15;
+    // Smoothly move spider to cursor
+    currentPos.lerp(targetPos, 0.1);
+    groupRef.current.position.copy(currentPos);
 
-    // Radial lines
-    for (let i = 0; i < numRadials; i++) {
-      const angle = (i / numRadials) * Math.PI * 2;
-      radPoints.push(
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(Math.cos(angle) * maxRadius, Math.sin(angle) * maxRadius, 0)
-      );
+    // Rotate spider to face direction of movement
+    if (distance > 0.05) {
+      const targetRotation = Math.atan2(dy, dx) - Math.PI / 2;
+      // Smooth rotation
+      let diff = targetRotation - groupRef.current.rotation.z;
+      while (diff < -Math.PI) diff += Math.PI * 2;
+      while (diff > Math.PI) diff -= Math.PI * 2;
+      groupRef.current.rotation.z += diff * 0.15;
     }
 
-    // Spiral/Concentric lines
-    for (let s = 1; s <= numSpirals; s++) {
-      const radius = (s / numSpirals) * maxRadius;
-      // Add slight sag/droop to make it look realistic
-      for (let i = 0; i < numRadials; i++) {
-        const angle1 = (i / numRadials) * Math.PI * 2;
-        const angle2 = ((i + 1) / numRadials) * Math.PI * 2;
-        
-        // Sag effect
-        const midAngle = (angle1 + angle2) / 2;
-        const sagRadius = radius * 0.95; // dips slightly in the middle
+    // Animate legs (Walking cycle based on movement and time)
+    const time = state.clock.elapsedTime;
+    const walkSpeed = distance > 0.05 ? 15 : 2; // Fast when moving, slow idle breathing
+    const amplitude = distance > 0.05 ? 0.3 : 0.05;
 
-        spirPoints.push(
-          new THREE.Vector3(Math.cos(angle1) * radius, Math.sin(angle1) * radius, 0),
-          new THREE.Vector3(Math.cos(midAngle) * sagRadius, Math.sin(midAngle) * sagRadius, 0),
-          new THREE.Vector3(Math.cos(midAngle) * sagRadius, Math.sin(midAngle) * sagRadius, 0),
-          new THREE.Vector3(Math.cos(angle2) * radius, Math.sin(angle2) * radius, 0)
-        );
-      }
-    }
-
-    return { 
-      radialPoints: new THREE.BufferGeometry().setFromPoints(radPoints),
-      spiralPoints: new THREE.BufferGeometry().setFromPoints(spirPoints)
-    };
-  }, []);
-
-  useFrame((state) => {
-    if (groupRef.current) {
-      // Gentle floating rotation
-      groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.05;
-      groupRef.current.rotation.y = Math.cos(state.clock.elapsedTime * 0.15) * 0.05;
-    }
+    legsRef.current.forEach((leg, index) => {
+      if (!leg) return;
+      const offset = (index * Math.PI) / 4; // Stagger leg movements
+      const isLeft = index < 4;
+      
+      // Organic sine wave crawling
+      leg.position.z = Math.sin(time * walkSpeed + offset) * amplitude;
+      leg.rotation.x = Math.cos(time * walkSpeed + offset) * amplitude * (isLeft ? 1 : -1);
+      leg.rotation.y = Math.sin(time * walkSpeed * 0.5 + offset) * (amplitude * 0.5);
+    });
   });
 
   return (
-    <group ref={groupRef} position={[0, 0, -5]} scale={[1.5, 1.5, 1.5]}>
-      <lineSegments geometry={radialPoints}>
-        <lineBasicMaterial color="#00ff88" transparent opacity={0.15} />
-      </lineSegments>
-      <lineSegments geometry={spiralPoints}>
-        <lineBasicMaterial color="#00ff88" transparent opacity={0.3} />
+    <group ref={groupRef} scale={[0.5, 0.5, 0.5]}>
+      {/* Abdomen */}
+      <mesh position={[0, -0.4, 0.2]} castShadow>
+        <sphereGeometry args={[0.6, 32, 32]} />
+        <meshStandardMaterial color="#022010" roughness={0.2} metalness={0.8} />
+      </mesh>
+      {/* Cephalothorax (Head) */}
+      <mesh position={[0, 0.4, 0.1]} castShadow>
+        <sphereGeometry args={[0.35, 32, 32]} />
+        <meshStandardMaterial color="#00ff88" roughness={0.1} metalness={0.9} emissive="#00ff88" emissiveIntensity={0.2} />
+      </mesh>
+      {/* Eyes */}
+      <mesh position={[-0.1, 0.7, 0.2]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+      <mesh position={[0.1, 0.7, 0.2]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+      
+      {/* Legs */}
+      {[...Array(8)].map((_, i) => {
+        const isLeft = i < 4;
+        const angle = isLeft ? (i * 0.4 + 0.5) : (-i * 0.4 - 0.5);
+        return (
+          <group 
+            key={i} 
+            ref={(el) => { if (el) legsRef.current[i] = el; }} 
+            position={[isLeft ? -0.2 : 0.2, 0.2, 0]} 
+            rotation={[0, 0, angle]}
+          >
+            <mesh position={[0, 0.8, 0]}>
+              <cylinderGeometry args={[0.04, 0.02, 1.6, 8]} />
+              <meshStandardMaterial color="#00ff88" roughness={0.4} metalness={0.6} />
+            </mesh>
+          </group>
+        );
+      })}
+    </group>
+  );
+};
+
+// --- Organic Elastic Web ---
+const OrganicWeb = () => {
+  const pointsRef = useRef<THREE.Points>(null);
+  const linesRef = useRef<THREE.LineSegments>(null);
+  const { viewport, mouse } = useThree();
+
+  const gridSize = 20;
+  const particleCount = gridSize * gridSize;
+  const spacing = 1.2;
+
+  // Generate web nodes
+  const { basePositions, positions } = useMemo(() => {
+    const basePositions = new Float32Array(particleCount * 3);
+    const positions = new Float32Array(particleCount * 3);
+    
+    let i = 0;
+    for (let x = 0; x < gridSize; x++) {
+      for (let y = 0; y < gridSize; y++) {
+        const px = (x - gridSize / 2) * spacing;
+        const py = (y - gridSize / 2) * spacing;
+        const pz = (Math.random() - 0.5) * 1.5;
+        
+        basePositions[i] = px;
+        basePositions[i + 1] = py;
+        basePositions[i + 2] = pz;
+        
+        positions[i] = px;
+        positions[i + 1] = py;
+        positions[i + 2] = pz;
+        i += 3;
+      }
+    }
+    return { basePositions, positions };
+  }, []);
+
+  const linePositions = useMemo(() => new Float32Array(particleCount * 4 * 3), []); // Max 4 connections per node
+
+  useFrame((state) => {
+    if (!pointsRef.current || !linesRef.current) return;
+    
+    const time = state.clock.elapsedTime;
+    const mouseX = (mouse.x * viewport.width) / 2;
+    const mouseY = (mouse.y * viewport.height) / 2;
+
+    const posAttr = pointsRef.current.geometry.attributes.position;
+    let lineIdx = 0;
+
+    for (let i = 0; i < particleCount; i++) {
+      const i3 = i * 3;
+      
+      // Base positions with organic breathing
+      let bx = basePositions[i3] + Math.sin(time * 0.5 + basePositions[i3+1]) * 0.2;
+      let by = basePositions[i3+1] + Math.cos(time * 0.6 + basePositions[i3]) * 0.2;
+      let bz = basePositions[i3+2] + Math.sin(time * 0.4 + i) * 0.1;
+
+      // Elastic pull towards cursor
+      const dx = mouseX - bx;
+      const dy = mouseY - by;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      if (dist < 4) {
+        const pull = Math.max(0, 1 - dist / 4);
+        bx += dx * pull * 0.4; // Pull effect
+        by += dy * pull * 0.4;
+        bz += pull * 1.5; // Bulge outwards towards camera
+      }
+
+      // Smooth interpolation for lifeform elasticity
+      const currentX = posAttr.getX(i);
+      const currentY = posAttr.getY(i);
+      const currentZ = posAttr.getZ(i);
+
+      posAttr.setXYZ(
+        i,
+        currentX + (bx - currentX) * 0.1,
+        currentY + (by - currentY) * 0.1,
+        currentZ + (bz - currentZ) * 0.1
+      );
+
+      // Connect adjacent nodes (grid logic)
+      const row = Math.floor(i / gridSize);
+      const col = i % gridSize;
+
+      const connectNode = (j: number) => {
+        linePositions[lineIdx++] = posAttr.getX(i);
+        linePositions[lineIdx++] = posAttr.getY(i);
+        linePositions[lineIdx++] = posAttr.getZ(i);
+        linePositions[lineIdx++] = posAttr.getX(j);
+        linePositions[lineIdx++] = posAttr.getY(j);
+        linePositions[lineIdx++] = posAttr.getZ(j);
+      };
+
+      if (col < gridSize - 1) connectNode(i + 1); // Right
+      if (row < gridSize - 1) connectNode(i + gridSize); // Down
+    }
+
+    posAttr.needsUpdate = true;
+    linesRef.current.geometry.setAttribute('position', new THREE.BufferAttribute(linePositions.subarray(0, lineIdx), 3));
+  });
+
+  return (
+    <group position={[0, 0, -2]}>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        </bufferGeometry>
+        <pointsMaterial size={0.08} color="#00ff88" transparent opacity={0.6} />
+      </points>
+
+      <lineSegments ref={linesRef}>
+        <bufferGeometry />
+        <lineBasicMaterial color="#00ff88" transparent opacity={0.15} blending={THREE.AdditiveBlending} />
       </lineSegments>
     </group>
   );
@@ -75,10 +219,14 @@ const SpiderWeb = () => {
 
 export default function NetworkGraph3D() {
   return (
-    <div className="fixed inset-0 z-[-1] bg-background">
-      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
-        <fog attach="fog" args={['#050505', 5, 25]} />
-        <SpiderWeb />
+    <div className="fixed inset-0 z-[-1] bg-[#020503]">
+      <Canvas camera={{ position: [0, 0, 12], fov: 60 }}>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[0, 0, 10]} intensity={2} color="#00ff88" />
+        <fog attach="fog" args={['#020503', 8, 20]} />
+        
+        <OrganicWeb />
+        <Spider3D />
       </Canvas>
     </div>
   );
