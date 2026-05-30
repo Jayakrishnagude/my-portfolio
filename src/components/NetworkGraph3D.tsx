@@ -13,6 +13,19 @@ if (typeof window !== 'undefined') {
   });
 }
 
+const spiderWorldPos = new THREE.Vector3();
+const clickEvents: {x: number, y: number, time: number}[] = [];
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('pointerdown', (e) => {
+    clickEvents.push({
+      x: (e.clientX / window.innerWidth) * 2 - 1,
+      y: -(e.clientY / window.innerHeight) * 2 + 1,
+      time: Date.now()
+    });
+  });
+}
+
 // --- Procedural Crawling Spider ---
 const Spider3D = () => {
   const groupRef = useRef<THREE.Group>(null);
@@ -37,6 +50,7 @@ const Spider3D = () => {
     // Smoothly move spider to cursor
     currentPos.lerp(targetPos, 0.1);
     groupRef.current.position.copy(currentPos);
+    spiderWorldPos.copy(currentPos); // Export for web shooter
 
     // Rotate spider to face direction of movement
     if (distance > 0.05) {
@@ -70,12 +84,12 @@ const Spider3D = () => {
       {/* Abdomen */}
       <mesh position={[0, -0.4, 0.2]} castShadow>
         <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color="#010a05" roughness={0.1} metalness={0.9} />
+        <meshStandardMaterial color="#010a05" roughness={0.1} metalness={0.9} emissive="#00ff88" emissiveIntensity={0.1} />
       </mesh>
       {/* Cephalothorax (Head) */}
       <mesh position={[0, 0.4, 0.1]} castShadow>
         <sphereGeometry args={[0.35, 32, 32]} />
-        <meshStandardMaterial color="#00ff88" roughness={0.1} metalness={1} emissive="#00ff88" emissiveIntensity={0.4} />
+        <meshStandardMaterial color="#00ff88" roughness={0.1} metalness={1} emissive="#00ff88" emissiveIntensity={0.6} />
       </mesh>
       {/* Eyes */}
       <mesh position={[-0.1, 0.7, 0.2]}>
@@ -100,12 +114,75 @@ const Spider3D = () => {
           >
             <mesh position={[0, 0.8, 0]}>
               <cylinderGeometry args={[0.03, 0.01, 1.8, 8]} />
-              <meshStandardMaterial color="#00ff88" roughness={0.2} metalness={0.8} emissive="#00ff88" emissiveIntensity={0.1} />
+              <meshStandardMaterial color="#00ff88" roughness={0.2} metalness={0.8} emissive="#00ff88" emissiveIntensity={0.3} />
             </mesh>
           </group>
         );
       })}
     </group>
+  );
+};
+
+// --- Web Shooter Mechanics ---
+const WebShooter = () => {
+  const linesRef = useRef<THREE.LineSegments>(null);
+  const { viewport } = useThree();
+  
+  const shots = useRef<{ start: THREE.Vector3, end: THREE.Vector3, time: number }[]>([]);
+  const maxShots = 20;
+
+  const positions = useMemo(() => new Float32Array(maxShots * 2 * 3), []);
+
+  useFrame(() => {
+    // Process new clicks
+    while(clickEvents.length > 0) {
+      const click = clickEvents.shift();
+      if(click) {
+        shots.current.push({
+          start: spiderWorldPos.clone(),
+          end: new THREE.Vector3((click.x * viewport.width) / 2, (click.y * viewport.height) / 2, 0),
+          time: Date.now()
+        });
+        if (shots.current.length > maxShots) shots.current.shift();
+      }
+    }
+
+    let lineIdx = 0;
+    const now = Date.now();
+    
+    shots.current.forEach(shot => {
+      const age = now - shot.time;
+      if (age < 1200) { // Web lasts 1.2 seconds
+        const progress = Math.min(age / 100, 1); // Shoots very fast (100ms)
+        
+        // Start point is always the spider's CURRENT position (so it stays attached as spider moves)
+        positions[lineIdx++] = spiderWorldPos.x;
+        positions[lineIdx++] = spiderWorldPos.y;
+        positions[lineIdx++] = spiderWorldPos.z;
+
+        // End point shoots out to the target
+        const currentEnd = new THREE.Vector3().copy(shot.start).lerp(shot.end, progress);
+        
+        positions[lineIdx++] = currentEnd.x;
+        positions[lineIdx++] = currentEnd.y;
+        positions[lineIdx++] = currentEnd.z;
+      } else {
+        positions[lineIdx++] = 0; positions[lineIdx++] = 0; positions[lineIdx++] = 0;
+        positions[lineIdx++] = 0; positions[lineIdx++] = 0; positions[lineIdx++] = 0;
+      }
+    });
+
+    if (linesRef.current) {
+      linesRef.current.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      linesRef.current.geometry.attributes.position.needsUpdate = true;
+    }
+  });
+
+  return (
+    <lineSegments ref={linesRef}>
+      <bufferGeometry />
+      <lineBasicMaterial color="#ffffff" transparent opacity={0.9} blending={THREE.AdditiveBlending} />
+    </lineSegments>
   );
 };
 
@@ -237,6 +314,7 @@ export default function NetworkGraph3D() {
         
         <OrganicWeb />
         <Spider3D />
+        <WebShooter />
       </Canvas>
     </div>
   );
