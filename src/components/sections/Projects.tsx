@@ -40,8 +40,8 @@ export default function Projects() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
-            <h2 className="text-accent-green font-mono tracking-widest uppercase text-sm mb-4">Featured Work</h2>
-            <h3 className="text-4xl md:text-5xl font-bold">Selected <span className="text-gradient">Creations</span></h3>
+            <h2 className="text-accent-green font-mono tracking-widest uppercase text-sm mb-2">Featured Work</h2>
+            <h3 className="text-xl md:text-2xl font-bold">Selected <span className="text-gradient">Creations</span></h3>
           </div>
           <button className="text-white/40 hover:text-white flex items-center gap-2 transition-colors">
             View All Projects <ArrowUpRight className="w-4 h-4" />
