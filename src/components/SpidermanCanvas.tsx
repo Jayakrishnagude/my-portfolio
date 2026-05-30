@@ -17,8 +17,9 @@ export default function SpidermanCanvas() {
       const dy = e.clientY - lastMousePos.current.y;
       
       if (dx !== 0 || dy !== 0) {
-        // Calculate angle of movement
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90; 
+        // Calculate angle of movement. 
+        // The spider image faces DOWN, so we subtract 90 degrees to align it.
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90; 
         setRotation(angle);
       }
 
@@ -57,7 +58,6 @@ export default function SpidermanCanvas() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let webs: { x1: number, y1: number, x2: number, y2: number, life: number }[] = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -110,10 +110,10 @@ export default function SpidermanCanvas() {
       />
       
       <motion.div
-        className="fixed z-[9999] pointer-events-none drop-shadow-[0_0_15px_rgba(0,255,136,0.8)]"
+        className="fixed z-[9999] pointer-events-none"
         animate={{
-          x: mousePos.x - 24,
-          y: mousePos.y - 24,
+          x: mousePos.x - 32,
+          y: mousePos.y - 32,
           rotate: rotation,
         }}
         transition={{
@@ -123,33 +123,12 @@ export default function SpidermanCanvas() {
           mass: 0.5
         }}
       >
-        {/* 3D-styled Spiderman Emblem SVG */}
-        <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g filter="url(#glow)">
-            <path d="M50 85 C 45 70, 40 50, 45 35 L 35 25 L 45 15 C 48 10, 52 10, 55 15 L 65 25 L 55 35 C 60 50, 55 70, 50 85 Z" fill="url(#spiderGrad)" />
-            {/* Legs Left */}
-            <path d="M45 35 Q 20 20 10 30" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M42 45 Q 15 40 5 60" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M42 55 Q 15 65 10 85" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M45 65 Q 25 80 20 95" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            {/* Legs Right */}
-            <path d="M55 35 Q 80 20 90 30" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M58 45 Q 85 40 95 60" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M58 55 Q 85 65 90 85" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-            <path d="M55 65 Q 75 80 80 95" stroke="url(#spiderGrad)" strokeWidth="4" strokeLinecap="round" fill="none"/>
-          </g>
-          <defs>
-            <linearGradient id="spiderGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ffffff" />
-              <stop offset="0.5" stopColor="#00ff88" />
-              <stop offset="1" stopColor="#047857" />
-            </linearGradient>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-        </svg>
+        {/* User's Custom 3D Spider Image */}
+        <img 
+          src="/spider.png" 
+          alt="Spider Cursor" 
+          className="w-16 h-16 object-contain drop-shadow-[0_0_15px_rgba(0,255,136,0.4)]"
+        />
       </motion.div>
     </>
   );
