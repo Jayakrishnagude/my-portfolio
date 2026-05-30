@@ -4,124 +4,72 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const ParticleNetwork = () => {
-  const pointsRef = useRef<THREE.Points>(null);
-  const linesRef = useRef<THREE.LineSegments>(null);
+const SpiderWeb = () => {
+  const groupRef = useRef<THREE.Group>(null);
 
-  const particleCount = 120;
-  const maxDistance = 3.5;
-  const bounds = 15;
+  // Generate Spider Web Geometry
+  const { radialPoints, spiralPoints } = useMemo(() => {
+    const radPoints = [];
+    const spirPoints = [];
+    
+    const numRadials = 16;
+    const numSpirals = 20;
+    const maxRadius = 15;
 
-  // Initialize particles
-  const { particles, positions } = useMemo(() => {
-    const particles = [];
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.05,
-          (Math.random() - 0.5) * 0.05,
-          (Math.random() - 0.5) * 0.05
-        ),
-      });
-      positions[i * 3] = (Math.random() - 0.5) * bounds;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * bounds;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * bounds;
+    // Radial lines
+    for (let i = 0; i < numRadials; i++) {
+      const angle = (i / numRadials) * Math.PI * 2;
+      radPoints.push(
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(Math.cos(angle) * maxRadius, Math.sin(angle) * maxRadius, 0)
+      );
     }
 
-    return { particles, positions };
-  }, []);
+    // Spiral/Concentric lines
+    for (let s = 1; s <= numSpirals; s++) {
+      const radius = (s / numSpirals) * maxRadius;
+      // Add slight sag/droop to make it look realistic
+      for (let i = 0; i < numRadials; i++) {
+        const angle1 = (i / numRadials) * Math.PI * 2;
+        const angle2 = ((i + 1) / numRadials) * Math.PI * 2;
+        
+        // Sag effect
+        const midAngle = (angle1 + angle2) / 2;
+        const sagRadius = radius * 0.95; // dips slightly in the middle
 
-  const linePositions = useMemo(() => new Float32Array(particleCount * particleCount * 3), []);
-  const lineColors = useMemo(() => new Float32Array(particleCount * particleCount * 3), []);
-
-  useFrame((state) => {
-    if (!pointsRef.current || !linesRef.current) return;
-
-    const posAttr = pointsRef.current.geometry.attributes.position;
-    let vertexpos = 0;
-    let colorpos = 0;
-    let numConnected = 0;
-
-    // Update positions
-    for (let i = 0; i < particleCount; i++) {
-      const p = particles[i];
-      let x = posAttr.getX(i) + p.velocity.x;
-      let y = posAttr.getY(i) + p.velocity.y;
-      let z = posAttr.getZ(i) + p.velocity.z;
-
-      // Bounce off walls
-      if (Math.abs(x) > bounds / 2) p.velocity.x *= -1;
-      if (Math.abs(y) > bounds / 2) p.velocity.y *= -1;
-      if (Math.abs(z) > bounds / 2) p.velocity.z *= -1;
-
-      posAttr.setXYZ(i, x, y, z);
-
-      // Connect lines
-      for (let j = i + 1; j < particleCount; j++) {
-        const dx = posAttr.getX(j) - x;
-        const dy = posAttr.getY(j) - y;
-        const dz = posAttr.getZ(j) - z;
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        if (dist < maxDistance) {
-          const alpha = 1.0 - dist / maxDistance;
-          // Green color interpolation: #00ff88 (0, 255, 136) -> scaled
-          const r = 0.0;
-          const g = 1.0;
-          const b = 0.53;
-
-          linePositions[vertexpos++] = x;
-          linePositions[vertexpos++] = y;
-          linePositions[vertexpos++] = z;
-          
-          linePositions[vertexpos++] = posAttr.getX(j);
-          linePositions[vertexpos++] = posAttr.getY(j);
-          linePositions[vertexpos++] = posAttr.getZ(j);
-
-          lineColors[colorpos++] = r;
-          lineColors[colorpos++] = g;
-          lineColors[colorpos++] = b;
-
-          lineColors[colorpos++] = r;
-          lineColors[colorpos++] = g;
-          lineColors[colorpos++] = b;
-
-          numConnected++;
-        }
+        spirPoints.push(
+          new THREE.Vector3(Math.cos(angle1) * radius, Math.sin(angle1) * radius, 0),
+          new THREE.Vector3(Math.cos(midAngle) * sagRadius, Math.sin(midAngle) * sagRadius, 0),
+          new THREE.Vector3(Math.cos(midAngle) * sagRadius, Math.sin(midAngle) * sagRadius, 0),
+          new THREE.Vector3(Math.cos(angle2) * radius, Math.sin(angle2) * radius, 0)
+        );
       }
     }
 
-    posAttr.needsUpdate = true;
-    
-    linesRef.current.geometry.setAttribute('position', new THREE.BufferAttribute(linePositions.subarray(0, vertexpos), 3));
-    linesRef.current.geometry.setAttribute('color', new THREE.BufferAttribute(lineColors.subarray(0, colorpos), 3));
-    
-    // Slow rotation
-    pointsRef.current.rotation.y += 0.001;
-    linesRef.current.rotation.y += 0.001;
-    pointsRef.current.rotation.x += 0.0005;
-    linesRef.current.rotation.x += 0.0005;
+    return { 
+      radialPoints: new THREE.BufferGeometry().setFromPoints(radPoints),
+      spiralPoints: new THREE.BufferGeometry().setFromPoints(spirPoints)
+    };
+  }, []);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Gentle floating rotation
+      groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.05;
+      groupRef.current.rotation.y = Math.cos(state.clock.elapsedTime * 0.15) * 0.05;
+    }
   });
 
   return (
-    <>
-      <points ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[positions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial size={0.05} color="#00ff88" transparent opacity={0.8} />
-      </points>
-
-      <lineSegments ref={linesRef}>
-        <bufferGeometry />
-        <lineBasicMaterial vertexColors transparent opacity={0.3} blending={THREE.AdditiveBlending} />
+    <group ref={groupRef} position={[0, 0, -5]} scale={[1.5, 1.5, 1.5]}>
+      <lineSegments geometry={radialPoints}>
+        <lineBasicMaterial color="#00ff88" transparent opacity={0.15} />
       </lineSegments>
-    </>
+      <lineSegments geometry={spiralPoints}>
+        <lineBasicMaterial color="#00ff88" transparent opacity={0.3} />
+      </lineSegments>
+    </group>
   );
 };
 
